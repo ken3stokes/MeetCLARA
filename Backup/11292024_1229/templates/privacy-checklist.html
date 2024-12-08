@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Checklist - CLARA</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #2D3436;
+            --accent-color: #00F5A0;
+            --background: #0F172A;
+            --card-bg: #1E293B;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 90%;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0.5rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            justify-content: center;
+        }
+
+        .nav-bar a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-bar a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-bar a:active {
+            transform: translateY(0);
+        }
+
+        .progress-bar {
+            background: var(--card-bg);
+            border-radius: 12px;
+            height: 36px;
+            margin: 2rem auto;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 1000px;
+            width: 100%;
+            position: relative;
+        }
+
+        .progress-inner {
+            background: var(--accent-color);
+            height: 100%;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 1rem;
+            z-index: 1;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+        }
+
+        .checklist-category {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .checklist-category h2 {
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .priority-high {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .priority-medium {
+            background: rgba(234, 179, 8, 0.2);
+            color: #eab308;
+        }
+
+        .export-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 2rem auto;
+            display: block;
+            width: auto;
+        }
+
+        .export-button:hover {
+            background: #5753e0;
+            transform: translateY(-2px);
+        }
+
+        .export-button:active {
+            transform: translateY(0);
+        }
+
+        .item-content {
+            flex: 1;
+            margin: 0 1rem;
+        }
+
+        .item-title {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-explanation {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        #progress-text {
+            text-align: center;
+            margin: 0.5rem 0;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            .checklist-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .priority-badge {
+                margin-left: 0;
+            }
+        }
+
+        .intro-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        .intro-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .checklist-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .checklist-item {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .checklist-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-description {
+            color: var(--text-secondary);
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+
+        .action-steps {
+            background: rgba(108, 99, 255, 0.1);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .action-steps ul {
+            margin: 0.5rem 0 0 1.5rem;
+            padding: 0;
+        }
+
+        .action-steps li {
+            color: var(--text-secondary);
+            margin: 0.5rem 0;
+        }
+
+        input[type="checkbox"] {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-top: 0.25rem;
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-bar">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/privacy-checklist" class="active">Privacy Checklist</a>
+            <a href="/password-storage-guide">Password Guide</a>
+            <a href="/security-glossary">Security Glossary</a>
+            <a href="/roadmap">Roadmap</a>
+        </nav>
+
+        <div class="intro-section">
+            <h1>Privacy Checklist</h1>
+            <p class="intro-text">Your journey to better digital privacy starts here. This interactive checklist helps you take control of your online presence step by step. As you complete each item, you'll strengthen your digital privacy and reduce your vulnerability to cyber threats.</p>
+            
+            <div class="progress-container">
+                <div class="progress-label">Your Privacy Progress</div>
+                <div class="progress-bar">
+                    <div class="progress-inner" id="progress-bar" style="width: 0%"></div>
+                    <p class="progress-text" id="progress-text" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0;">0% Complete</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <div class="checklist-category">
+                <h2>Password Security</h2>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="0">
+                    <div class="item-content">
+                        <span class="item-title">Use unique, strong passwords for all accounts (minimum 12 characters)</span>
+                        <p class="item-explanation">Using the same password across multiple accounts puts all of them at risk if one is compromised. Strong passwords with a mix of characters make it significantly harder for attackers to guess or crack them.</p>
+                    </div>
+                    <span class="priority-badge priority-high">HIGH</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="1">
+                    <div class="item-content">
+                        <span class="item-title">Enable Two-Factor Authentication on all critical accounts</span>
+                        <p class="item-explanation">Two-factor authentication adds an extra layer of security beyond your password. Even if someone gets your password, they still can't access your account without the second factor (like a code from your phone).</p>
+                    </div>
+                    <span class="priority-badge priority-high">HIGH</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="2">
+                    <div class="item-content">
+                        <span class="item-title">Use a password manager to securely store credentials</span>
+                        <p class="item-explanation">Password managers help you generate and store strong, unique passwords for all your accounts. This eliminates the need to remember multiple complex passwords while maintaining high security.</p>
+                    </div>
+                    <span class="priority-badge priority-high">HIGH</span>
+                </div>
+            </div>
+
+            <div class="checklist-category">
+                <h2>Device Security</h2>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="3">
+                    <div class="item-content">
+                        <span class="item-title">Keep operating system and software up to date</span>
+                        <p class="item-explanation">Regular updates often include security patches that protect against newly discovered vulnerabilities. Keeping your system and software up to date is crucial for maintaining security.</p>
+                    </div>
+                    <span class="priority-badge priority-high">HIGH</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="4">
+                    <div class="item-content">
+                        <span class="item-title">Use antivirus software and keep it updated</span>
+                        <p class="item-explanation">Antivirus software helps protect your device from malware and viruses. Keeping it updated ensures you have the latest protection against new threats.</p>
+                    </div>
+                    <span class="priority-badge priority-medium">MEDIUM</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="5">
+                    <div class="item-content">
+                        <span class="item-title">Enable disk encryption on all devices</span>
+                        <p class="item-explanation">Disk encryption protects your data by making it unreadable to unauthorized parties. This is especially important for laptops and mobile devices that can be easily lost or stolen.</p>
+                    </div>
+                    <span class="priority-badge priority-high">HIGH</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="6">
+                    <div class="item-content">
+                        <span class="item-title">Set up automatic backups for important data</span>
+                        <p class="item-explanation">Regular backups ensure that your important data is safe in case your device is lost, stolen, or damaged. This helps prevent data loss and makes recovery easier.</p>
+                    </div>
+                    <span class="priority-badge priority-medium">MEDIUM</span>
+                </div>
+            </div>
+
+            <div class="checklist-category">
+                <h2>Network Security</h2>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="7">
+                    <div class="item-content">
+                        <span class="item-title">Use a VPN when connecting to public Wi-Fi</span>
+                        <p class="item-explanation">Public Wi-Fi networks are often not secure, making it easy for hackers to intercept your data. A VPN encrypts your internet traffic, protecting your data from eavesdropping.</p>
+                    </div>
+                    <span class="priority-badge priority-high">HIGH</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="8">
+                    <div class="item-content">
+                        <span class="item-title">Change default passwords on network devices</span>
+                        <p class="item-explanation">Default passwords are often well-known and can be easily exploited by attackers. Changing them to strong, unique passwords significantly improves the security of your network devices.</p>
+                    </div>
+                    <span class="priority-badge priority-high">HIGH</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="9">
+                    <div class="item-content">
+                        <span class="item-title">Enable WPA3 encryption on your Wi-Fi network</span>
+                        <p class="item-explanation">WPA3 is the latest and most secure encryption protocol for Wi-Fi networks. Enabling it protects your network from various types of attacks and ensures a higher level of security.</p>
+                    </div>
+                    <span class="priority-badge priority-medium">MEDIUM</span>
+                </div>
+            </div>
+
+            <div class="checklist-category">
+                <h2>Browser Security</h2>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="10">
+                    <div class="item-content">
+                        <span class="item-title">Use HTTPS-only mode in your browser</span>
+                        <p class="item-explanation">HTTPS ensures that your internet traffic is encrypted, protecting your data from eavesdropping and tampering. Using HTTPS-only mode in your browser adds an extra layer of security.</p>
+                    </div>
+                    <span class="priority-badge priority-high">HIGH</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="11">
+                    <div class="item-content">
+                        <span class="item-title">Install privacy-focused browser extensions (ad blocker, tracker blocker)</span>
+                        <p class="item-explanation">Privacy-focused browser extensions can block trackers and ads, reducing the amount of data collected about you and improving your online privacy.</p>
+                    </div>
+                    <span class="priority-badge priority-medium">MEDIUM</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="12">
+                    <div class="item-content">
+                        <span class="item-title">Regularly clear browser history and cookies</span>
+                        <p class="item-explanation">Regularly clearing your browser history and cookies helps remove tracking data and reduces the risk of your personal data being exploited.</p>
+                    </div>
+                    <span class="priority-badge priority-medium">MEDIUM</span>
+                </div>
+            </div>
+
+            <div class="checklist-category">
+                <h2>Data Privacy</h2>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="13">
+                    <div class="item-content">
+                        <span class="item-title">Review and adjust privacy settings on social media accounts</span>
+                        <p class="item-explanation">Social media platforms often collect a significant amount of personal data. Reviewing and adjusting your privacy settings can help limit the data they collect and how it's used.</p>
+                    </div>
+                    <span class="priority-badge priority-high">HIGH</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="14">
+                    <div class="item-content">
+                        <span class="item-title">Use encrypted messaging apps for sensitive communications</span>
+                        <p class="item-explanation">Encrypted messaging apps protect your communications from eavesdropping and interception. Using them for sensitive communications adds an extra layer of security and privacy.</p>
+                    </div>
+                    <span class="priority-badge priority-medium">MEDIUM</span>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" class="custom-checkbox" data-item-id="15">
+                    <div class="item-content">
+                        <span class="item-title">Regularly review and delete unused accounts/applications</span>
+                        <p class="item-explanation">Unused accounts and applications can still collect and store your personal data. Regularly reviewing and deleting them helps reduce the risk of data breaches and improves your overall privacy.</p>
+                    </div>
+                    <span class="priority-badge priority-medium">MEDIUM</span>
+                </div>
+            </div>
+
+            <button class="export-button" onclick="exportToPDF()">Export Progress Report</button>
+
+            <script>
+                function updateProgress() {
+                    const totalItems = document.querySelectorAll('.custom-checkbox').length;
+                    const checkedItems = document.querySelectorAll('.custom-checkbox:checked').length;
+                    const progressPercentage = (checkedItems / totalItems) * 100;
+                    
+                    document.getElementById('progress-bar').style.width = progressPercentage + '%';
+                    document.querySelector('.progress-text').textContent = Math.round(progressPercentage) + '% Complete';
+                }
+
+                // Handle checkbox changes
+                document.querySelectorAll('.custom-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', updateProgress);
+                });
+
+                // Initialize progress bar
+                updateProgress();
+
+                async function exportToPDF() {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+                    
+                    // Set up document
+                    doc.setFontSize(24);
+                    doc.setTextColor(108, 99, 255); // Primary color
+                    doc.text("CLARA", 20, 20);
+                    
+                    doc.setFontSize(16);
+                    doc.setTextColor(45, 52, 54); // Secondary color
+                    doc.text("Privacy Checklist Report", 20, 30);
+                    
+                    // Add horizontal line
+                    doc.setDrawColor(108, 99, 255);
+                    doc.setLineWidth(0.5);
+                    doc.line(20, 35, 190, 35);
+                    
+                    // Date and Progress
+                    doc.setFontSize(12);
+                    doc.setTextColor(45, 52, 54);
+                    doc.text("Generated: " + new Date().toLocaleDateString(), 20, 45);
+                    
+                    const totalItems = document.querySelectorAll('.custom-checkbox').length;
+                    const checkedItems = document.querySelectorAll('.custom-checkbox:checked').length;
+                    const progress = Math.round((checkedItems / totalItems) * 100);
+                    doc.text(`Overall Progress: ${progress}%`, 120, 45);
+                    
+                    // Progress bar
+                    doc.setDrawColor(220, 220, 220);
+                    doc.setFillColor(220, 220, 220);
+                    doc.rect(20, 50, 170, 5, 'F');
+                    doc.setFillColor(108, 99, 255);
+                    doc.rect(20, 50, (170 * progress) / 100, 5, 'F');
+                    
+                    let yPos = 70;
+                    
+                    // Prepare both completed and pending items arrays
+                    const completedRows = [];
+                    const pendingRows = [];
+                    
+                    document.querySelectorAll('.checklist-item').forEach(item => {
+                        const checkbox = item.querySelector('.custom-checkbox');
+                        const text = item.querySelector('.item-title').textContent;
+                        const priority = item.querySelector('.priority-badge').textContent;
+                        const explanation = item.querySelector('.item-explanation').textContent;
+                        
+                        if (checkbox.checked) {
+                            completedRows.push([
+                                '[X] ' + text,
+                                priority.replace(/[^\x20-\x7E]/g, ''),
+                                explanation
+                            ]);
+                        } else {
+                            pendingRows.push([
+                                '[ ] ' + text,
+                                priority.replace(/[^\x20-\x7E]/g, ''),
+                                explanation
+                            ]);
+                        }
+                    });
+                    
+                    // Completed Items Section
+                    doc.setFontSize(14);
+                    doc.setTextColor(0, 245, 160); // Accent color
+                    doc.text("Completed Items", 20, yPos);
+                    yPos += 10;
+
+                    if (completedRows.length > 0) {
+                        doc.autoTable({
+                            startY: yPos,
+                            head: [['Task', 'Priority', 'Why This Matters']],
+                            body: completedRows,
+                            theme: 'grid',
+                            headStyles: {
+                                fillColor: [108, 99, 255],
+                                textColor: [255, 255, 255]
+                            },
+                            styles: {
+                                fontSize: 10,
+                                cellPadding: 5,
+                                font: 'helvetica',
+                                overflow: 'linebreak',
+                                cellWidth: 'wrap'
+                            },
+                            columnStyles: {
+                                0: { cellWidth: 70 },
+                                1: { cellWidth: 25 },
+                                2: { cellWidth: 95 }
+                            },
+                            margin: { top: 10, bottom: 10 },
+                            pageBreak: 'auto',
+                            rowPageBreak: 'avoid'
+                        });
+                        yPos = doc.lastAutoTable.finalY + 20;
+                    } else {
+                        doc.setFontSize(10);
+                        doc.setTextColor(45, 52, 54);
+                        doc.text("No items completed yet.", 30, yPos);
+                        yPos += 20;
+                    }
+                    
+                    // Add page break if needed before pending items
+                    if (yPos > 250) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+
+                    // Pending Items Section
+                    doc.setFontSize(14);
+                    doc.setTextColor(239, 68, 68); // Red for pending
+                    doc.text("Pending Items", 20, yPos);
+                    yPos += 10;
+
+                    if (pendingRows.length > 0) {
+                        doc.autoTable({
+                            startY: yPos,
+                            head: [['Task', 'Priority', 'Why This Matters']],
+                            body: pendingRows,
+                            theme: 'grid',
+                            headStyles: {
+                                fillColor: [239, 68, 68],
+                                textColor: [255, 255, 255]
+                            },
+                            styles: {
+                                fontSize: 10,
+                                cellPadding: 5,
+                                font: 'helvetica',
+                                overflow: 'linebreak',
+                                cellWidth: 'wrap'
+                            },
+                            columnStyles: {
+                                0: { cellWidth: 70 },
+                                1: { cellWidth: 25 },
+                                2: { cellWidth: 95 }
+                            },
+                            margin: { top: 10, bottom: 10 },
+                            pageBreak: 'auto',
+                            rowPageBreak: 'avoid'
+                        });
+                    } else {
+                        doc.setFontSize(10);
+                        doc.setTextColor(45, 52, 54);
+                        doc.text("All items completed! Great job!", 30, yPos);
+                    }
+                    
+                    // Footer
+                    const pageCount = doc.getNumberOfPages();
+                    for (let i = 1; i <= pageCount; i++) {
+                        doc.setPage(i);
+                        doc.setFontSize(10);
+                        doc.setTextColor(128, 128, 128);
+                        doc.text(
+                            `Page ${i} of ${pageCount}`,
+                            doc.internal.pageSize.width / 2,
+                            doc.internal.pageSize.height - 10,
+                            { align: 'center' }
+                        );
+                    }
+                    
+                    // Save the PDF
+                    const now = new Date();
+                    const timestamp = now.getFullYear() + '-' + 
+                        String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                        String(now.getDate()).padStart(2, '0') + '_' + 
+                        String(now.getHours()).padStart(2, '0') + '-' + 
+                        String(now.getMinutes()).padStart(2, '0');
+                    doc.save(`CLARA-Privacy-Checklist_${timestamp}.pdf`);
+                }
+            </script>
+        </div>
+    </div>
+</body>
+</html>

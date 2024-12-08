@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap - CLARA</title>
+    <style>
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #2D3436;
+            --accent-color: #00F5A0;
+            --background: #0F172A;
+            --card-bg: #1E293B;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 90%;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0.5rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            justify-content: center;
+        }
+
+        .nav-bar a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-bar a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-bar a:active {
+            transform: translateY(0);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--card-bg), var(--background));
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .roadmap-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .timeline-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: var(--accent-color);
+            border: 4px solid var(--primary-color);
+            right: -17px;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -17px;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: 40px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 40px;
+        }
+
+        .timeline-date {
+            display: inline-block;
+            padding: 5px 15px;
+            background: var(--accent-color);
+            color: var(--background);
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .timeline-title {
+            margin: 10px 0;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .timeline-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .timeline-features li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .timeline-features li::before {
+            content: '•';
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+
+            .timeline-item::after {
+                left: 15px;
+                right: auto;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-bar">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/privacy-checklist">Privacy Checklist</a>
+            <a href="/password-storage-guide">Password Guide</a>
+            <a href="/security-glossary">Security Glossary</a>
+            <a href="/roadmap">Roadmap</a>
+        </nav>
+
+        <div class="hero">
+            <h1>CLARA Roadmap</h1>
+            <p>Discover what's coming next in our journey to enhance your digital security</p>
+        </div>
+
+        <div class="timeline-container">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Q1 2025</span>
+                        <span class="status-badge status-progress">In Progress</span>
+                        <h3 class="timeline-title">AI Security Assistant</h3>
+                        <p class="timeline-description">Introducing an AI-powered security assistant for personalized recommendations.</p>
+                        <ul class="timeline-features">
+                            <li>Natural language security queries</li>
+                            <li>Contextual security advice</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Q1 2025</span>
+                        <span class="status-badge status-planned">Planned</span>
+                        <h3 class="timeline-title">Interactive Security Training</h3>
+                        <p class="timeline-description">Step-by-step interactive tutorials for common security scenarios.</p>
+                        <ul class="timeline-features">
+                            <li>Phishing awareness simulations</li>
+                            <li>Password strength exercises</li>
+                            <li>Social engineering prevention</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Q2 2025</span>
+                        <span class="status-badge status-planned">Planned</span>
+                        <h3 class="timeline-title">Payment Security Guardian</h3>
+                        <p class="timeline-description">Protect yourself from payment fraud and scams with advanced education.</p>
+                        <ul class="timeline-features">
+                            <li>Payment security risk assessment tools</li>
+                            <li>Common payment scam identification guide</li>
+                            <li>Secure payment method comparisons</li>
+                            <li>Digital wallet security best practices</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Q2 2025</span>
+                        <span class="status-badge status-planned">Planned</span>
+                        <h3 class="timeline-title">Financial Security Education</h3>
+                        <p class="timeline-description">Comprehensive guides to help you understand and prevent financial fraud.</p>
+                        <ul class="timeline-features">
+                            <li>Payment fraud warning signs</li>
+                            <li>Secure checkout verification guide</li>
+                            <li>Payment information protection strategies</li>
+                            <li>Fraud recovery step-by-step guide</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Q2 2025</span>
+                        <span class="status-badge status-planned">Planned</span>
+                        <h3 class="timeline-title">Security Score Dashboard</h3>
+                        <p class="timeline-description">Track your security progress with an intuitive dashboard.</p>
+                        <ul class="timeline-features">
+                            <li>Visual security metrics</li>
+                            <li>Personalized improvement tips</li>
+                            <li>Progress tracking over time</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Q3 2025</span>
+                        <span class="status-badge status-planned">Planned</span>
+                        <h3 class="timeline-title">Security Community Hub</h3>
+                        <p class="timeline-description">Connect with security-conscious individuals and share knowledge.</p>
+                        <ul class="timeline-features">
+                            <li>Security best practices forum</li>
+                            <li>Privacy tips exchange</li>
+                            <li>Community-verified resources</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-date">Q3 2025</span>
+                        <span class="status-badge status-planned">Planned</span>
+                        <h3 class="timeline-title">Advanced Privacy Tools</h3>
+                        <p class="timeline-description">Enhanced tools for managing your digital privacy.</p>
+                        <ul class="timeline-features">
+                            <li>Privacy settings analyzer</li>
+                            <li>Data exposure checker</li>
+                            <li>Digital footprint assessment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

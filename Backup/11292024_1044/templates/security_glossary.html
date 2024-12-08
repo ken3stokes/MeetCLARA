@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Glossary - CLARA</title>
+    <style>
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #2D3436;
+            --accent-color: #00F5A0;
+            --background: #0F172A;
+            --card-bg: #1E293B;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1rem;
+            background: var(--card-bg);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .nav-bar a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-bar a:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .glossary-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .glossary-header h1 {
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .glossary-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 600px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .glossary-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glossary-section h2 {
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .term-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .term-container:hover {
+            transform: translateX(10px);
+        }
+
+        .term {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .definition {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .learn-more {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .learn-more:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .glossary-header h1 {
+                font-size: 2rem;
+            }
+
+            .term-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-bar">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/privacy-checklist">Privacy Checklist</a>
+            <a href="/password-storage-guide">Password Guide</a>
+            <a href="/security-glossary">Security Glossary</a>
+        </nav>
+
+        <div class="glossary-header">
+            <h1>Security Glossary</h1>
+            <p>A comprehensive guide to common cybersecurity terms and concepts, explained in simple language.</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search security terms..." id="searchInput">
+        </div>
+
+        <div class="glossary-section">
+            <h2>Authentication & Access</h2>
+            <div class="term-container">
+                <div class="term">Two-Factor Authentication (2FA)</div>
+                <div class="definition">A security process that requires two different forms of identification to access an account. Typically combines something you know (password) with something you have (phone) or something you are (fingerprint).</div>
+                <a href="https://pages.nist.gov/800-63-3/sp800-63b.html#522-authentication-using-two-factors" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">Password Hash</div>
+                <div class="definition">A cryptographic representation of a password that has been transformed into a fixed-length string of characters. Hashing is one-way, meaning the original password cannot be recovered from the hash.</div>
+                <a href="https://auth0.com/blog/hashing-passwords-one-way-road-to-security/" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">Biometric Authentication</div>
+                <div class="definition">A security method that uses unique physical characteristics (fingerprints, facial features, iris patterns) to verify a person's identity. Provides a high level of security but requires proper implementation to protect biometric data.</div>
+                <a href="https://pages.nist.gov/800-63-3/sp800-63b.html#biometric_use" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">Single Sign-On (SSO)</div>
+                <div class="definition">An authentication method that allows users to access multiple applications with one set of credentials. Improves user experience while maintaining security through centralized authentication.</div>
+                <a href="https://pages.nist.gov/800-63-3/sp800-63c.html#federation" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+        </div>
+
+        <div class="glossary-section">
+            <h2>Network Security</h2>
+            <div class="term-container">
+                <div class="term">SSL/TLS</div>
+                <div class="definition">Security protocols that establish encrypted connections between web browsers and servers, protecting data in transit. Users can look for the padlock icon in their browser's address bar to confirm a secure connection.</div>
+                <a href="https://www.cloudflare.com/learning/ssl/what-is-ssl/" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">VPN (Virtual Private Network)</div>
+                <div class="definition">A service that encrypts your internet traffic and masks your IP address, providing privacy and security when using public Wi-Fi or accessing sensitive information online.</div>
+                <a href="https://www.cisco.com/c/en/us/products/security/vpn-endpoint-security-clients/what-is-vpn.html" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">Firewall</div>
+                <div class="definition">A network security system that monitors and controls incoming and outgoing network traffic based on predetermined security rules. Acts as a barrier between trusted internal networks and untrusted external networks.</div>
+                <a href="https://www.fortinet.com/resources/cyberglossary/firewall" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">DNS (Domain Name System)</div>
+                <div class="definition">The internet's directory system that converts human-readable domain names into IP addresses. DNS security is crucial because attacks can redirect users to malicious websites.</div>
+                <a href="https://www.cloudflare.com/learning/dns/what-is-dns/" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+        </div>
+
+        <div class="glossary-section">
+            <h2>Privacy & Data Protection</h2>
+            <div class="term-container">
+                <div class="term">End-to-End Encryption (E2EE)</div>
+                <div class="definition">A communication system where only the communicating users can read the messages. Messages are encrypted on the sender's device and can only be decrypted by the intended recipient.</div>
+                <a href="https://www.cloudflare.com/learning/privacy/what-is-end-to-end-encryption/" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">Data Breach</div>
+                <div class="definition">An incident where sensitive, protected, or confidential data is exposed, stolen, or copied by an unauthorized individual. Can include personal information, passwords, credit card numbers, or other sensitive data.</div>
+                <a href="https://www.ibm.com/topics/data-breach" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">Zero Trust Security</div>
+                <div class="definition">A security model that requires strict identity verification for every person and device trying to access resources, regardless of whether they are inside or outside the network perimeter.</div>
+                <a href="https://www.nist.gov/publications/zero-trust-architecture" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">GDPR (General Data Protection Regulation)</div>
+                <div class="definition">A comprehensive data protection law in the European Union that gives individuals control over their personal data and regulates how organizations must handle and protect this data.</div>
+                <a href="https://gdpr.eu/what-is-gdpr/" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+        </div>
+
+        <div class="glossary-section">
+            <h2>Common Threats</h2>
+            <div class="term-container">
+                <div class="term">Phishing</div>
+                <div class="definition">A cyberattack that uses fraudulent messages to trick people into revealing sensitive information or installing malicious software. Often impersonates legitimate companies or contacts.</div>
+                <a href="https://www.ftc.gov/tips-advice/business-center/small-businesses/cybersecurity/phishing" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">Malware</div>
+                <div class="definition">Malicious software designed to damage, disrupt, or gain unauthorized access to computer systems. Includes viruses, trojans, ransomware, and spyware.</div>
+                <a href="https://consumer.ftc.gov/articles/malware-how-protect-against-detect-and-remove-it" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">Ransomware</div>
+                <div class="definition">A type of malware that encrypts files and demands payment for the decryption key. Can affect individuals, businesses, and organizations of all sizes.</div>
+                <a href="https://www.cisa.gov/stopransomware" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+            <div class="term-container">
+                <div class="term">Social Engineering</div>
+                <div class="definition">Psychological manipulation techniques used to trick people into making security mistakes or giving away sensitive information. Relies on human error rather than technical vulnerabilities.</div>
+                <a href="https://www.proofpoint.com/us/threat-reference/social-engineering" class="learn-more" target="_blank">Learn more →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const termContainers = document.querySelectorAll('.term-container');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+
+            termContainers.forEach(container => {
+                const term = container.querySelector('.term').textContent.toLowerCase();
+                const definition = container.querySelector('.definition').textContent.toLowerCase();
+
+                if (term.includes(searchTerm) || definition.includes(searchTerm)) {
+                    container.style.display = 'block';
+                } else {
+                    container.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

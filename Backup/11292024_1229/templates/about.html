@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - CLARA</title>
+    <style>
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #2D3436;
+            --accent-color: #00F5A0;
+            --background: #0F172A;
+            --card-bg: #1E293B;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 90%;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(135deg, var(--card-bg), var(--background));
+            margin-bottom: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0.5rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            justify-content: center;
+        }
+
+        .nav-bar a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-bar a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-bar a:active {
+            transform: translateY(0);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .avatar-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 0 20px rgba(0, 245, 160, 0.3);
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .section {
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-item h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .security-practices {
+            list-style: none;
+            padding: 0;
+        }
+
+        .security-practices li {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .security-practices li::before {
+            content: "🛡️";
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--primary-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem auto;
+            max-width: 1000px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .stat-source {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            opacity: 0.7;
+        }
+
+        .stats-section {
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1000px;
+            background: linear-gradient(135deg, var(--card-bg), var(--background));
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        .hero-description {
+            max-width: 800px;
+            margin: 1.5rem auto;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .stats-intro, .stats-conclusion {
+            text-align: center;
+            max-width: 800px;
+            margin: 1.5rem auto;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .stat-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            line-height: 1.4;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .feature-list li {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '→';
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+        }
+
+        .mission-section {
+            max-width: 1000px;
+            margin: 2rem auto;
+        }
+
+        .coming-soon {
+            margin-top: 2rem;
+            border: 1px solid var(--accent-color);
+            background: linear-gradient(135deg, var(--card-bg), rgba(0, 245, 160, 0.1));
+        }
+
+        .coming-soon h2 {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav-bar">
+            <a href="/">Home</a>
+            <a href="/about" class="active">About</a>
+            <a href="/privacy-checklist">Privacy Checklist</a>
+            <a href="/password-storage-guide">Password Guide</a>
+            <a href="/security-glossary">Security Glossary</a>
+            <a href="/roadmap">Roadmap</a>
+        </nav>
+
+        <div class="hero">
+            <div class="avatar-container">
+                <img src="/static/images/clara.jpeg" alt="CLARA Avatar" class="avatar">
+            </div>
+            <h1>Meet CLARA</h1>
+            <p class="subtitle">Cybersecurity Learning And Risk Advisor</p>
+            <div class="hero-description">
+                <p>In today's digital landscape where cyber threats are constantly evolving, CLARA stands as your dedicated security companion. Built with a focus on education and practical guidance, CLARA makes digital security accessible and understandable for everyone.</p>
+                <p>Whether you're new to cybersecurity or looking to strengthen your digital privacy, CLARA provides clear guidance, interactive tools, and educational resources to help protect your digital life. With AI-powered features coming in 2025, CLARA will continue to evolve to meet your security needs.</p>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h2 class="section-title">Why Digital Security Matters</h2>
+            <p class="stats-intro">The digital threat landscape is rapidly evolving, making personal cybersecurity more critical than ever. Here are some key statistics that highlight the importance of taking action:</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">83%</div>
+                    <div class="stat-label">of organizations experienced phishing attacks in 2023</div>
+                    <div class="stat-description">Phishing remains one of the most prevalent cyber threats, targeting both individuals and organizations.</div>
+                    <div class="stat-source">Source: Proofpoint State of the Phish Report</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">$4.45M</div>
+                    <div class="stat-label">Average cost of a data breach in 2023</div>
+                    <div class="stat-description">The financial impact of cyber attacks continues to rise, affecting businesses of all sizes.</div>
+                    <div class="stat-source">Source: IBM Cost of a Data Breach Report</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number">51%</div>
+                    <div class="stat-label">of people reuse passwords across multiple accounts</div>
+                    <div class="stat-description">Password reuse remains a critical vulnerability, making multiple accounts susceptible to breach.</div>
+                    <div class="stat-source">Source: Google/Harris Poll Security Survey</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number">60%</div>
+                    <div class="stat-label">of small businesses close within 6 months of a cyber attack</div>
+                    <div class="stat-description">Small businesses are particularly vulnerable to cyber attacks, often lacking robust security measures.</div>
+                    <div class="stat-source">Source: National Cybersecurity Alliance</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">of cybersecurity breaches are caused by human error</div>
+                    <div class="stat-description">Education and awareness are crucial in preventing security incidents.</div>
+                    <div class="stat-source">Source: World Economic Forum</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number">2.5X</div>
+                    <div class="stat-label">Increase in ransomware attacks since 2021</div>
+                    <div class="stat-description">Ransomware attacks are becoming more sophisticated and frequent, targeting all sectors.</div>
+                    <div class="stat-source">Source: SonicWall Cyber Threat Report</div>
+                </div>
+            </div>
+            <p class="stats-conclusion">These statistics underscore the critical need for robust cybersecurity practices. CLARA is designed to help you navigate these challenges and protect what matters most.</p>
+        </div>
+
+        <div class="mission-section">
+            <div class="card">
+                <h2>How CLARA Helps</h2>
+                <p>CLARA empowers you with practical tools and knowledge to protect your digital life:</p>
+                <ul class="feature-list">
+                    <li><strong>Interactive Privacy Checklist:</strong> Step-by-step guidance to improve your digital privacy with practical actions.</li>
+                    <li><strong>Password Security Guide:</strong> Learn best practices for creating and managing secure passwords.</li>
+                    <li><strong>Security Education:</strong> Clear, jargon-free explanations of important security concepts.</li>
+                    <li><strong>Privacy-First Design:</strong> All tools run locally in your browser - no data collection or tracking.</li>
+                </ul>
+            </div>
+            
+            <div class="card coming-soon">
+                <h2>Coming in 2025</h2>
+                <ul class="feature-list">
+                    <li><strong>AI Security Assistant:</strong> Get personalized security recommendations powered by artificial intelligence.</li>
+                    <li><strong>Interactive Training:</strong> Hands-on exercises to learn cybersecurity best practices.</li>
+                    <li><strong>Security Score Dashboard:</strong> Track and improve your security posture over time.</li>
+                    <li><strong>Community Features:</strong> Connect with others and share security knowledge.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

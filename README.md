@@ -1,5 +1,7 @@
 # CLARA (Cybersecurity Learning And Risk Advisor)
 
+![CLARA Logo](static/images/Clara.jpeg)
+
 Your trusted companion for digital security and privacy. A comprehensive toolkit that provides essential security tools and educational resources.
 
 ## Features

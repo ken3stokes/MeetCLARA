@@ -445,8 +445,16 @@
             min-width: 200px;
         }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/version-notification.css') }}">
 </head>
 <body>
+    <script src="{{ url_for('static', filename='js/version-check.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const versionChecker = new VersionChecker('{{ version.version }}');
+            versionChecker.checkVersion();
+        });
+    </script>
     <div class="container">
         <nav class="nav-bar">
             <a href="/" class="active">Home</a>

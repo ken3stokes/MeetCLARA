@@ -8,8 +8,15 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from io import BytesIO
 import math
+from flask import Flask, render_template, jsonify, request
+from version import VERSION_INFO
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
+
+# Make version info available to all templates
+@app.context_processor
+def inject_version():
+    return dict(version=VERSION_INFO)
 
 def check_domain_security(domain):
     """Check domain security settings"""
@@ -337,6 +344,11 @@ def password_storage_guide():
 def password_manager_data():
     """Get password manager comparison data"""
     return flask.jsonify(get_password_managers())
+
+@app.route('/api/version')
+def get_version():
+    """Return the latest version information"""
+    return jsonify(VERSION_INFO)
 
 @app.route('/privacy-checklist')
 def privacy_checklist():

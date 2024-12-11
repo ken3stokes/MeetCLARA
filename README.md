@@ -65,6 +65,70 @@ The application promotes:
 - Privacy-conscious online behavior
 - Continuous security education
 
+## Deployment
+
+### Local Development
+1. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   pip install -r requirements-test.txt  # For development/testing
+   ```
+3. Run the application:
+   ```bash
+   python app.py
+   ```
+
+### PythonAnywhere Deployment
+1. Create a PythonAnywhere account
+2. Upload the code or clone the repository
+3. Create a virtual environment and install dependencies
+4. Configure the WSGI file to point to app.py
+5. Set up the web app configuration
+
+## Testing
+
+Run the test suite:
+```bash
+python -m pytest -v
+```
+
+Generate coverage report:
+```bash
+python -m pytest --cov=. --html=test-reports/report.html
+```
+
+## Version Control
+
+We follow Semantic Versioning (SemVer):
+- MAJOR version for incompatible API changes
+- MINOR version for new functionality in a backward compatible manner
+- PATCH version for backward compatible bug fixes
+
+Current version information can be found in `VERSION.md` and `version.py`.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### Code Style
+- Follow PEP 8 guidelines for Python code
+- Use meaningful variable and function names
+- Add docstrings to all functions and classes
+- Write tests for new features
+
 ## License
 
-All rights reserved. 2024
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact the maintainers.

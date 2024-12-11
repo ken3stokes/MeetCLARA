@@ -243,12 +243,12 @@
             margin: 20px 0;
             text-align: left;
         }
-        
+
         .meter-label {
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         .meter-container {
             width: 100%;
             height: 20px;
@@ -256,80 +256,80 @@
             border-radius: 10px;
             overflow: hidden;
         }
-        
+
         .meter-bar {
             height: 100%;
             width: 0;
             transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
         }
-        
+
         .meter-text {
             margin-top: 5px;
             font-weight: bold;
         }
-        
+
         .check-list, .warning-list, .recommendations-list {
             list-style: none;
             padding: 0;
         }
-        
+
         .check-list li {
             padding: 5px 0;
             padding-left: 25px;
             position: relative;
         }
-        
+
         .check-list li:before {
             content: '✓';
             color: #4CAF50;
             position: absolute;
             left: 0;
         }
-        
+
         .check-list li.not-met:before {
             content: '×';
             color: #f44336;
         }
-        
+
         .warning-list li {
             padding: 5px 0;
             padding-left: 25px;
             position: relative;
             color: #ff9800;
         }
-        
+
         .warning-list li:before {
             content: '⚠';
             position: absolute;
             left: 0;
         }
-        
+
         .recommendations-list li {
             padding: 5px 0;
             padding-left: 25px;
             position: relative;
         }
-        
+
         .recommendations-list li:before {
             content: '→';
             position: absolute;
             left: 0;
             color: #2196F3;
         }
-        
+
         .analysis-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
-        
+
         .criteria-section, .patterns-section, .recommendations-section, .stats-section {
             background: rgba(255, 255, 255, 0.05);
             padding: 15px;
             border-radius: 8px;
         }
-        
+
         .options-group {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
@@ -445,16 +445,8 @@
             min-width: 200px;
         }
     </style>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/version-notification.css') }}">
 </head>
 <body>
-    <script src="{{ url_for('static', filename='js/version-check.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const versionChecker = new VersionChecker('{{ version.version }}');
-            versionChecker.checkVersion();
-        });
-    </script>
     <div class="container">
         <nav class="nav-bar">
             <a href="/" class="active">Home</a>
@@ -467,7 +459,7 @@
 
         <div class="hero">
             <div class="avatar-container">
-                <img src="/static/images/clara.jpeg" alt="CLARA Avatar" class="avatar">
+                <img src="{{ url_for('static', filename='images/Clara.jpg') }}" alt="CLARA Logo" style="width: 150px; height: auto;">
             </div>
             <h1>CLARA</h1>
             <p>Your trusted companion for digital security and privacy</p>
@@ -477,13 +469,13 @@
         <div class="card">
             <h2>Password Generator</h2>
             <p>Generate a secure password with customizable options.</p>
-            
+
             <div class="options-group">
                 <div class="input-group">
                     <label for="passwordLength">Length:</label>
                     <input type="number" id="passwordLength" value="16" min="8" max="128">
                 </div>
-                
+
                 <div class="checkbox-group">
                     <label>
                         <input type="checkbox" id="useUppercase" checked>
@@ -503,9 +495,9 @@
                     </label>
                 </div>
             </div>
-            
+
             <button onclick="generatePassword()" class="action-button">Generate Password</button>
-            
+
             <div id="generatedPassword" class="password-display" style="display: none;">
                 <input type="text" id="passwordOutput" readonly>
                 <button onclick="copyPassword()" class="copy-btn">Copy</button>
@@ -515,16 +507,16 @@
         <div class="card">
             <h2>Password Analyzer</h2>
             <p>Check the strength of your password and get detailed security recommendations.</p>
-            
+
             <div class="input-group">
                 <input type="password" id="password-to-analyze" placeholder="Enter password to analyze" class="secure-input">
                 <button onclick="togglePasswordVisibility('password-to-analyze')" class="toggle-password">
                     <i class="fas fa-eye"></i>
                 </button>
             </div>
-            
+
             <button onclick="analyzePassword()" class="action-button">Analyze Password</button>
-            
+
             <div id="analysis-results" style="display: none;">
                 <div class="strength-meter">
                     <div class="meter-label">Password Strength:</div>
@@ -533,30 +525,57 @@
                     </div>
                     <div id="strength-label" class="meter-text"></div>
                 </div>
-                
+
                 <div class="analysis-details">
                     <div class="criteria-section">
                         <h3>Criteria Met</h3>
                         <ul id="criteria-list" class="check-list">
                         </ul>
                     </div>
-                    
+
                     <div class="patterns-section">
                         <h3>Issues Found</h3>
                         <ul id="patterns-list" class="warning-list">
                         </ul>
                     </div>
-                    
+
                     <div class="recommendations-section">
                         <h3>Recommendations</h3>
                         <ul id="recommendations-list" class="recommendations-list">
                         </ul>
                     </div>
-                    
+
                     <div class="stats-section">
                         <h3>Technical Details</h3>
                         <p>Length: <span id="password-length"></span> characters</p>
                         <p>Entropy: <span id="password-entropy"></span> bits</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Domain Security Checker</h2>
+            <p>Check the SSL/TLS configuration and security of any domain.</p>
+
+            <div class="input-group">
+                <input type="text" id="domain-to-check" placeholder="Enter domain (e.g., example.com)" class="secure-input">
+            </div>
+
+            <button onclick="checkDomainSecurity()" class="action-button">Check Domain Security</button>
+
+            <div id="domain-results" style="display: none;">
+                <div class="analysis-details">
+                    <div class="criteria-section">
+                        <h3>SSL/TLS Information</h3>
+                        <ul id="ssl-info" class="check-list">
+                        </ul>
+                    </div>
+
+                    <div class="certificate-section">
+                        <h3>Certificate Details</h3>
+                        <ul id="cert-info" class="info-list">
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -570,9 +589,9 @@
             const useLowercase = document.getElementById('useLowercase').checked;
             const useNumbers = document.getElementById('useNumbers').checked;
             const useSpecial = document.getElementById('useSpecial').checked;
-            
+
             try {
-                const response = await fetch('/generate-password', {
+                const response = await fetch('/api/generate-password', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -585,7 +604,7 @@
                         use_special: useSpecial
                     })
                 });
-                
+
                 const data = await response.json();
                 if (response.ok) {
                     document.getElementById('passwordOutput').value = data.password;
@@ -597,22 +616,22 @@
                 alert(error.message);
             }
         }
-        
+
         function copyPassword() {
             const passwordOutput = document.getElementById('passwordOutput');
             passwordOutput.select();
             document.execCommand('copy');
-            
+
             const copyBtn = document.querySelector('.copy-btn');
             copyBtn.textContent = 'Copied!';
             setTimeout(() => copyBtn.textContent = 'Copy', 2000);
         }
-        
+
         function togglePasswordVisibility(inputId) {
             const input = document.getElementById(inputId);
             const button = input.nextElementSibling;
             const icon = button.querySelector('i');
-            
+
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.classList.remove('fa-eye');
@@ -623,23 +642,23 @@
                 icon.classList.add('fa-eye');
             }
         }
-        
+
         async function analyzePassword() {
             const password = document.getElementById('password-to-analyze').value;
             if (!password) {
                 alert('Please enter a password to analyze');
                 return;
             }
-            
+
             try {
-                const response = await fetch('/analyze_password', {
+                const response = await fetch('/api/analyze-password', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ password: password })
                 });
-                
+
                 const data = await response.json();
                 if (response.ok) {
                     displayAnalysisResults(data);
@@ -650,24 +669,24 @@
                 alert(error.message);
             }
         }
-        
+
         function displayAnalysisResults(analysis) {
             // Show results container
             document.getElementById('analysis-results').style.display = 'block';
-            
+
             // Update strength meter
             const strengthBar = document.getElementById('strength-bar');
             const strengthLabel = document.getElementById('strength-label');
-            
+
             strengthBar.style.width = `${analysis.score}%`;
             strengthBar.style.backgroundColor = getStrengthColor(analysis.score);
             strengthLabel.textContent = analysis.strength_label;
             strengthLabel.style.color = getStrengthColor(analysis.score);
-            
+
             // Update criteria list
             const criteriaList = document.getElementById('criteria-list');
             criteriaList.innerHTML = '';
-            
+
             const criteria = [
                 { key: 'length', label: '12+ characters' },
                 { key: 'uppercase', label: 'Uppercase letters' },
@@ -676,18 +695,18 @@
                 { key: 'special', label: 'Special characters' },
                 { key: 'no_common_patterns', label: 'No common patterns' }
             ];
-            
+
             criteria.forEach(criterion => {
                 const li = document.createElement('li');
                 li.textContent = criterion.label;
                 li.className = analysis.criteria_met[criterion.key] ? 'met' : 'not-met';
                 criteriaList.appendChild(li);
             });
-            
+
             // Update patterns list
             const patternsList = document.getElementById('patterns-list');
             patternsList.innerHTML = '';
-            
+
             if (analysis.patterns_found.length === 0) {
                 const li = document.createElement('li');
                 li.textContent = 'No issues found';
@@ -700,29 +719,85 @@
                     patternsList.appendChild(li);
                 });
             }
-            
+
             // Update recommendations
             const recommendationsList = document.getElementById('recommendations-list');
             recommendationsList.innerHTML = '';
-            
+
             analysis.recommendations.forEach(recommendation => {
                 const li = document.createElement('li');
                 li.textContent = recommendation;
                 recommendationsList.appendChild(li);
             });
-            
+
             // Update technical details
             document.getElementById('password-length').textContent = analysis.length;
-            document.getElementById('password-entropy').textContent = 
+            document.getElementById('password-entropy').textContent =
                 analysis.entropy.toFixed(2);
         }
-        
+
         function getStrengthColor(score) {
             if (score >= 80) return '#4CAF50';  // Very Strong - Green
             if (score >= 60) return '#8BC34A';  // Strong - Light Green
             if (score >= 40) return '#FFC107';  // Moderate - Yellow
             if (score >= 20) return '#FF9800';  // Weak - Orange
             return '#f44336';                   // Very Weak - Red
+        }
+
+        async function checkDomainSecurity() {
+            const domain = document.getElementById('domain-to-check').value.trim();
+            if (!domain) {
+                alert('Please enter a domain to check');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/check-domain', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ domain: domain })
+                });
+
+                const data = await response.json();
+                displayDomainResults(data);
+            } catch (error) {
+                alert('Error checking domain security: ' + error.message);
+            }
+        }
+
+        function displayDomainResults(results) {
+            const resultsDiv = document.getElementById('domain-results');
+            const sslInfo = document.getElementById('ssl-info');
+            const certInfo = document.getElementById('cert-info');
+
+            sslInfo.innerHTML = '';
+            certInfo.innerHTML = '';
+
+            if (!results.success) {
+                sslInfo.innerHTML = `<li class="error">${results.error}</li>`;
+                resultsDiv.style.display = 'block';
+                return;
+            }
+
+            // Display SSL/TLS information
+            sslInfo.innerHTML = `
+                <li>SSL/TLS Version: ${results.ssl_version}</li>
+                <li>Cipher Suite: ${results.cipher_suite}</li>
+            `;
+
+            // Display certificate information
+            const cert = results.certificate;
+            certInfo.innerHTML = `
+                <li>Subject: ${cert.subject.CN || 'N/A'}</li>
+                <li>Issuer: ${cert.issuer.CN || 'N/A'}</li>
+                <li>Valid From: ${cert.notBefore}</li>
+                <li>Valid Until: ${cert.notAfter}</li>
+                <li>Version: ${cert.version}</li>
+            `;
+
+            resultsDiv.style.display = 'block';
         }
     </script>
 </body>

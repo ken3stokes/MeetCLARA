@@ -8,21 +8,17 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from io import BytesIO
 import math
-from flask import Flask, render_template, jsonify, request
-from version import VERSION_INFO
 
-app = Flask(__name__)
-
-# Make version info available to all templates
-@app.context_processor
-def inject_version():
-    return dict(version=VERSION_INFO)
+app = flask.Flask(__name__)
 
 def check_domain_security(domain):
     """Check domain security settings"""
     try:
-        # Create SSL context
+        # Create SSL context with secure configuration
         context = ssl.create_default_context()
+        context.minimum_version = ssl.TLSVersion.TLSv1_2
+        context.maximum_version = ssl.TLSVersion.TLSv1_3
+        context.options |= ssl.OP_NO_TLSv1 | ssl.OP_NO_TLSv1_1  # Explicitly disable TLS 1.0 and 1.1
         
         with socket.create_connection((domain, 443)) as sock:
             with context.wrap_socket(sock, server_hostname=domain) as ssock:
@@ -205,88 +201,99 @@ def get_password_managers():
                     'Secret key system',
                     'AES-256 bit encryption',
                     'Biometric authentication',
-                    'Secure remote password',
-                    'Local data encryption'
+                    'Secure remote password'
                 ],
                 'pros': [
                     'Polished user interface',
-                    'Strong security model',
+                    'Travel mode for border crossing',
                     'Excellent customer support',
-                    'Travel mode for border crossing'
+                    'Strong security model'
                 ],
                 'cons': [
                     'No free tier',
-                    'Relatively expensive',
+                    'More expensive than competitors',
                     'No password inheritance feature'
                 ]
             },
             {
                 'name': 'KeePassXC',
                 'type': 'Local',
-                'price': 'Free (Open Source)',
+                'price': 'Free',
                 'features': [
-                    'Offline storage',
+                    'Local storage',
                     'Cross-platform',
-                    'Browser integration',
-                    'Hardware key support',
-                    'Password generator'
+                    'Password generator',
+                    'Auto-type',
+                    'Hardware key support'
                 ],
                 'security_features': [
-                    'Local-only storage',
                     'AES-256 encryption',
+                    'ChaCha20 cipher',
                     'Argon2 key derivation',
-                    'KDBX4 database format',
-                    'No cloud exposure'
+                    'KDBX 4.0 format',
+                    'YubiKey support'
                 ],
                 'pros': [
                     'Completely free',
-                    'Full control over data',
+                    'Open source',
                     'No cloud dependency',
-                    'Regular updates'
+                    'Very secure'
                 ],
                 'cons': [
                     'Manual sync required',
                     'Steeper learning curve',
-                    'No official mobile apps'
+                    'Less convenient than cloud solutions'
                 ]
             }
         ],
         'best_practices': [
             {
-                'category': 'Password Manager Setup',
+                'category': 'Use Unique Passwords',
                 'tips': [
-                    'Use a strong master password (16+ characters)',
-                    'Enable two-factor authentication if available',
-                    'Keep your recovery codes in a secure offline location',
-                    'Never reuse your master password anywhere else',
-                    'Regularly update your password manager software'
+                    'Never reuse passwords across different accounts',
+                    'Use randomly generated passwords when possible',
+                    'Longer passwords (12+ characters) are better than complex short ones',
+                    'Avoid using personal information in passwords'
                 ]
             },
             {
-                'category': 'Daily Usage',
+                'category': 'Enable Two-Factor Authentication',
                 'tips': [
-                    'Generate unique passwords for every account',
-                    'Use maximum password length allowed by each site',
-                    'Enable auto-lock after system idle',
-                    'Regularly review and update stored passwords',
-                    'Use secure notes for sensitive information'
+                    'Use 2FA whenever available, especially for critical accounts',
+                    'Prefer authenticator apps over SMS for 2FA',
+                    'Keep backup codes in a secure location',
+                    'Consider hardware security keys for maximum protection'
                 ]
             },
             {
-                'category': 'Security Measures',
+                'category': 'Regular Password Updates',
                 'tips': [
-                    'Keep your device\'s operating system updated',
-                    'Use antivirus software to prevent keyloggers',
-                    'Enable biometric authentication when available',
-                    'Regularly backup your password database',
-                    'Monitor for any unauthorized access attempts'
+                    'Change passwords if a service reports a data breach',
+                    'Update critical account passwords every 3-6 months',
+                    'Use your password manager\'s security monitoring features',
+                    'Check haveibeenpwned.com regularly'
+                ]
+            },
+            {
+                'category': 'Secure Master Password',
+                'tips': [
+                    'Make your master password long and memorable',
+                    'Never share your master password with anyone',
+                    'Consider using a passphrase instead of a password',
+                    'Store master password recovery info securely'
                 ]
             }
         ]
     }
 
 def generate_password(length=12, use_uppercase=True, use_lowercase=True, use_numbers=True, use_special=True):
-    """Generate a secure password based on specified criteria"""
+    """Generate a secure random password"""
+    if length < 1:
+        raise ValueError("Password length must be at least 1")
+        
+    if not any([use_uppercase, use_lowercase, use_numbers, use_special]):
+        raise ValueError("At least one character type must be selected")
+        
     chars = ''
     if use_lowercase:
         chars += 'abcdefghijklmnopqrstuvwxyz'
@@ -296,18 +303,17 @@ def generate_password(length=12, use_uppercase=True, use_lowercase=True, use_num
         chars += '0123456789'
     if use_special:
         chars += '!@#$%^&*()_+-=[]{}|;:,.<>?'
-    
-    if not chars:
-        chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?'
-    
+        
     return ''.join(secrets.choice(chars) for _ in range(length))
 
 @app.route('/')
 def index():
+    """Render the main page"""
     return flask.render_template('index.html')
 
 @app.route('/roadmap')
 def roadmap():
+    """Render the roadmap page"""
     return flask.render_template('roadmap.html')
 
 @app.route('/about')
@@ -315,40 +321,38 @@ def about():
     """Render the about page"""
     return flask.render_template('about.html')
 
-@app.route('/analyze_password', methods=['POST'])
+@app.route('/api/analyze-password', methods=['POST'])
 def analyze_password():
     """Analyze password strength"""
     data = flask.request.get_json()
     if not data or 'password' not in data:
         return flask.jsonify({'error': 'No password provided'}), 400
         
-    analysis = analyze_password_strength(data['password'])
+    password = data['password']
+    analysis = analyze_password_strength(password)
     return flask.jsonify(analysis)
 
-@app.route('/check-domain', methods=['POST'])
+@app.route('/api/check-domain', methods=['POST'])
 def check_domain():
     """Check domain security"""
     data = flask.request.get_json()
     if not data or 'domain' not in data:
         return flask.jsonify({'error': 'No domain provided'}), 400
         
-    results = check_domain_security(data['domain'])
+    domain = data['domain']
+    results = check_domain_security(domain)
     return flask.jsonify(results)
 
 @app.route('/password-storage-guide')
 def password_storage_guide():
     """Render the password storage guide page"""
-    return flask.render_template('password_storage_guide.html')
+    return flask.render_template('password-storage-guide.html')
 
-@app.route('/api/password-managers')
+@app.route('/api/password-manager-data')
 def password_manager_data():
     """Get password manager comparison data"""
-    return flask.jsonify(get_password_managers())
-
-@app.route('/api/version')
-def get_version():
-    """Return the latest version information"""
-    return jsonify(VERSION_INFO)
+    managers = get_password_managers()
+    return flask.jsonify(managers)
 
 @app.route('/privacy-checklist')
 def privacy_checklist():
@@ -358,35 +362,36 @@ def privacy_checklist():
 @app.route('/security-glossary')
 def security_glossary():
     """Render the security glossary page"""
-    return flask.render_template('security_glossary.html')
+    return flask.render_template('security-glossary.html')
 
-@app.route('/password-health')
-def password_health():
-    return flask.render_template('password-health.html')
+@app.route('/password-generator')
+def password_generator_page():
+    """Render the password generator page"""
+    return flask.render_template('password-generator.html')
 
-@app.route('/generate-password', methods=['POST'])
-def password_generator():
+@app.route('/api/generate-password', methods=['POST'])
+def generate_password_api():
     """Generate a password based on user criteria"""
+    data = flask.request.get_json()
+    
+    # Set defaults if not provided
+    length = int(data.get('length', 12))
+    use_uppercase = data.get('uppercase', True)
+    use_lowercase = data.get('lowercase', True)
+    use_numbers = data.get('numbers', True)
+    use_special = data.get('special', True)
+    
     try:
-        data = flask.request.get_json()
-        if not data:
-            return flask.jsonify({'error': 'No data provided'}), 400
-            
-        length = int(data.get('length', 12))
-        if length < 8 or length > 128:
-            return flask.jsonify({'error': 'Password length must be between 8 and 128 characters'}), 400
-            
         password = generate_password(
             length=length,
-            use_uppercase=data.get('use_uppercase', True),
-            use_lowercase=data.get('use_lowercase', True),
-            use_numbers=data.get('use_numbers', True),
-            use_special=data.get('use_special', True)
+            use_uppercase=use_uppercase,
+            use_lowercase=use_lowercase,
+            use_numbers=use_numbers,
+            use_special=use_special
         )
-        
         return flask.jsonify({'password': password})
-    except Exception as e:
-        return flask.jsonify({'error': str(e)}), 500
+    except ValueError as e:
+        return flask.jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
